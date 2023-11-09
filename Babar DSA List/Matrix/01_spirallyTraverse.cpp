@@ -38,3 +38,6 @@ class Solution
         return ans;
     }
 };
+
+TC(n*m)
+SC(1)
