@@ -20,3 +20,6 @@ class Solution{
 
 TC(n)
 SC(1)
+
+
+
