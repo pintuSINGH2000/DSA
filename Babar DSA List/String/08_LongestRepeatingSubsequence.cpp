@@ -17,7 +17,8 @@ class Solution {
 		        }
 		    }
 		    return dp[n][n];
-
 		}
-		
 };
+
+TC(n*n)
+SC(n*n)
