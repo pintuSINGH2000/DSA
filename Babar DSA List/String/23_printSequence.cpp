@@ -51,3 +51,73 @@ class Solution{
 
 TC(N)
 SC(1)
+3
+    int maximumXorProduct(long long a, long long b, int n) {
+        ll x,y;
+        rap(i,n-1,0){
+            if(a>b)swap(a,b);
+            x = (a>>i)&1;
+            y = (b>>i)&1;
+            if(!x){
+                a^= 1ll<<i;
+                b^= 1ll<<i;
+            }
+        }
+        return (a%MOD) * (b%MOD) % MOD;
+    }
+4
+    vi x;
+int n;
+
+struct segtree{
+    int tree[1<<18];
+    int n,a,b,val;
+    void build(int id,int le,int ri){
+        if(le==ri){
+            tree[id] = x[le-1];
+            return;
+        }
+        int mid = (le+ri)>>1;
+        build(lc,le,mid), build(rc,mid+1,ri);
+        tree[id] = max(tree[lc], tree[rc]);
+        return;
+    }
+    int que(int id,int le,int ri){
+        if(tree[id]<=val)return 0;
+        if(le==ri)return le;
+        int mid = (le+ri)>>1;
+        if(a<=mid){
+            int t1 = que(lc,le,mid);
+            if(t1)return t1;
+        }
+        return que(rc,mid+1,ri);
+    }
+    int que(int l,int v){
+        a = l, b = n;
+        val = v;
+        return que(1,1,n);
+    }
+}tree;
+
+class Solution {
+public:
+    vector<int> leftmostBuildingQueries(vector<int>& h, vector<vector<int>>& queries) {
+        x = h;
+        n = x.size();
+        tree.n = n;
+        tree.build(1,1,n);
+        vi ans;
+        int a,b;
+        for(auto &i:queries){
+            a = i[0], b = i[1];
+            if(a>b)swap(a,b);
+            if(a==b)ans.pb(a);
+            else if(h[a]<h[b])ans.pb(b);
+            else {
+                a = tree.que(b+1, h[a]);
+                ans.pb(a-1);
+            }
+        }
+        return ans;
+    }
+};
